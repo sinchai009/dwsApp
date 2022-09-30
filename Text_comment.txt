@@ -1,0 +1,53 @@
+ 
+ #######################################################
+ ####   Scaffold
+ #######################################################
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(  ## พื้นที่ทั้งหมด ยกเว้น ระบบ
+
+        child: WidgetText(text: showDate ?? ''),
+      ),
+    );
+  }
+
+
+########################################################
+####  State
+########################################################
+
+
+import 'package:dwrapp/utility/my_service.dart';
+import 'package:dwrapp/widgets/widget_text.dart';
+import 'package:flutter/material.dart';
+
+class Intro extends StatefulWidget {
+  const Intro({super.key});
+
+  @override
+  State<Intro> createState() => _IntroState();
+}
+
+class _IntroState extends State<Intro> {
+ 4.  String? showDate, showTime;
+
+  @override
+ 1. init  
+
+ void initState() {  
+    super.initState();
+ 3.   findCurrentTime();
+  }
+
+ 2. 
+ void findCurrentTime() {
+    DateTime dateTime = DateTime.now();
+    print('##dateTime ===> $dateTime');
+
+    showDate = MyService().changeDateToDate(dateTime: dateTime);
+  }
+
+
+
+  #################################################################
