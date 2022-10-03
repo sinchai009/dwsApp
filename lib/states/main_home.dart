@@ -14,7 +14,7 @@ class MainHome extends StatefulWidget {
 }
 
 class _MainHomeState extends State<MainHome> {
-  bool load = true;
+  bool load = true, showDetail = false;
   var stationAllModels = <StationAllModel>[];
   Map<MarkerId, Marker> markers = {};
 
@@ -38,7 +38,7 @@ class _MainHomeState extends State<MainHome> {
         StationAllModel stationAllModel = StationAllModel.fromMap(element);
         stationAllModels.add(stationAllModel);
 
-        MarkerId markerId = MarkerId(stationAllModel.station_id);
+        MarkerId markerId = MarkerId(index.toString());
         Marker marker = Marker(
           markerId: markerId,
           position: LatLng(
@@ -47,8 +47,20 @@ class _MainHomeState extends State<MainHome> {
               stationAllModel.lng.trim(),
             ),
           ),
+          infoWindow: InfoWindow(
+            title: stationAllModel.title,
+            snippet: stationAllModel.station_id,
+            onTap: () {
+              print('## You tap marker index ==>  ${markerId.value}');
+              showDetail = true;
+              setState(() {});
+            },
+          ),
           onTap: () {
-            print('## You tap marker index ==>  ${markerId.toString()}');
+            showDetail = false;
+            setState(() {
+              
+            });
           },
         );
 
@@ -79,17 +91,42 @@ class _MainHomeState extends State<MainHome> {
             height: boxConstraints.maxHeight,
             child: load
                 ? const WidgetProgress()
-                : GoogleMap(
-                    initialCameraPosition: CameraPosition(
-                      target: LatLng(MyConstant.latMap, MyConstant.lngMap),
-                      zoom: 6,
-                    ),
-                    onMapCreated: (controller) {},
-                    markers: Set<Marker>.of(markers.values),
+                : Stack(
+                    children: [
+                      showMap(),
+                      showDetail ? newDetail(boxConstraints) : const SizedBox(),
+                    ],
                   ),
           );
         },
       ),
+    );
+  }
+
+  SizedBox newDetail(BoxConstraints boxConstraints) {
+    return SizedBox(
+      width: boxConstraints.maxWidth,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          WidgetText(
+            text: 'test Name',
+            textStyle: MyConstant().h2Style(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  GoogleMap showMap() {
+    return GoogleMap(
+      initialCameraPosition: CameraPosition(
+        target: LatLng(MyConstant.latMap, MyConstant.lngMap),
+        zoom: 6,
+      ),
+      onMapCreated: (controller) {},
+      markers: Set<Marker>.of(markers.values),
+      zoomControlsEnabled: false,
     );
   }
 }

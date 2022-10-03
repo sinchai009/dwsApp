@@ -65,19 +65,23 @@ class _IntroState extends State<Intro> {
             path: 'images/logo.png',
           ),
         ),
-        Column(
+        Row(mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            WidgetText(
-              text: 'กรมทรัพยากรน้ำ',
-              textStyle: MyConstant().h2BlueStyle(),
-            ),
-            WidgetText(
-              text: 'กระทรวงทรัพยากรธรรมชาติ',
-              textStyle: MyConstant().h2BlueStyle(),
-            ),
-            WidgetText(
-              text: 'และสิ่งแวดล้อม',
-              textStyle: MyConstant().h2BlueStyle(),
+            Column(
+              children: [
+                WidgetText(
+                  text: 'กรมทรัพยากรน้ำ',
+                  textStyle: MyConstant().h2BlueStyle(),
+                ),
+                WidgetText(
+                  text: 'กระทรวงทรัพยากรธรรมชาติ',
+                  textStyle: MyConstant().h2BlueStyle(),
+                ),
+                WidgetText(
+                  text: 'และสิ่งแวดล้อม',
+                  textStyle: MyConstant().h2BlueStyle(),
+                ),
+              ],
             ),
           ],
         ),
