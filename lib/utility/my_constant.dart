@@ -3,6 +3,12 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class MyConstant {
+  
+  static String domain = 'https://iot-isamu.000webhostapp.com';
+
+  static double latMap = 13.666808253248941;
+  static double lngMap = 100.55347167093655;
+
   static Color dark = Colors.black;
   static Color white = Colors.white;
   static Color red = Colors.red;
@@ -39,6 +45,14 @@ class MyConstant {
       fontSize: 20,
       color: blue,
       fontWeight: FontWeight.w500,
+    );
+  }
+
+  TextStyle h2WhiteStyle() {
+    return TextStyle(
+      fontSize: 20,
+      color: white,
+      fontWeight: FontWeight.bold,
     );
   }
 
