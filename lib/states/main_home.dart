@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:dwrapp/models/station_all_model.dart';
+import 'package:dwrapp/states/detail_station.dart';
 import 'package:dwrapp/utility/my_constant.dart';
 import 'package:dwrapp/widgets/widget_buttom.dart';
 import 'package:dwrapp/widgets/widget_image_internet.dart';
@@ -119,7 +120,7 @@ class _MainHomeState extends State<MainHome> {
                 Container(
                   padding: const EdgeInsets.all(4),
                   width: boxConstraints.maxWidth * 0.25,
-                  height: boxConstraints.maxWidth * 0.25 +12,
+                  height: boxConstraints.maxWidth * 0.25 + 12,
                   child: WidgetImageInternet(
                       url:
                           '${MyConstant.domain}/dwr/image/station/${stationAllModels[indexDetail!].image}'),
@@ -127,7 +128,7 @@ class _MainHomeState extends State<MainHome> {
                 Container(
                   padding: const EdgeInsets.all(4),
                   width: boxConstraints.maxWidth * 0.75 - 2,
-                  height: boxConstraints.maxWidth * 0.25 +12,
+                  height: boxConstraints.maxWidth * 0.25 + 12,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -139,8 +140,18 @@ class _MainHomeState extends State<MainHome> {
                           text:
                               'ต.${stationAllModels[indexDetail!].tumbon} อ.${stationAllModels[indexDetail!].amphoe} จ.${stationAllModels[indexDetail!].province} ${stationAllModels[indexDetail!].postcode}'),
                       WidgetTextButtom(
-                        label: 'รายละเอียด',
-                        pressFunc: () {},
+                        label: 'รายละเอียด ...',
+                        pressFunc: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailStation(
+                                  stationAllModel:
+                                      stationAllModels[indexDetail!],
+                                  stationAllModels: stationAllModels,
+                                ),
+                              ));
+                        },
                       ),
                     ],
                   ),
