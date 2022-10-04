@@ -1,7 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:dwrapp/models/station_all_model.dart';
 import 'package:dwrapp/utility/my_constant.dart';
+import 'package:dwrapp/widgets/widget_buttom.dart';
+import 'package:dwrapp/widgets/widget_image_internet.dart';
 import 'package:dwrapp/widgets/widget_text.dart';
+import 'package:dwrapp/widgets/widget_text_buttom.dart';
 import 'package:dwrapp/widgets/wudget_progress.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -17,6 +20,7 @@ class _MainHomeState extends State<MainHome> {
   bool load = true, showDetail = false;
   var stationAllModels = <StationAllModel>[];
   Map<MarkerId, Marker> markers = {};
+  int? indexDetail;
 
   @override
   void initState() {
@@ -53,14 +57,13 @@ class _MainHomeState extends State<MainHome> {
             onTap: () {
               print('## You tap marker index ==>  ${markerId.value}');
               showDetail = true;
+              indexDetail = int.parse(markerId.value.trim());
               setState(() {});
             },
           ),
           onTap: () {
             showDetail = false;
-            setState(() {
-              
-            });
+            setState(() {});
           },
         );
 
@@ -103,15 +106,47 @@ class _MainHomeState extends State<MainHome> {
     );
   }
 
-  SizedBox newDetail(BoxConstraints boxConstraints) {
-    return SizedBox(
+  Container newDetail(BoxConstraints boxConstraints) {
+    return Container(
       width: boxConstraints.maxWidth,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          WidgetText(
-            text: 'test Name',
-            textStyle: MyConstant().h2Style(),
+          Container(
+            decoration: MyConstant().curveBox(),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(4),
+                  width: boxConstraints.maxWidth * 0.25,
+                  height: boxConstraints.maxWidth * 0.25 +12,
+                  child: WidgetImageInternet(
+                      url:
+                          '${MyConstant.domain}/dwr/image/station/${stationAllModels[indexDetail!].image}'),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(4),
+                  width: boxConstraints.maxWidth * 0.75 - 2,
+                  height: boxConstraints.maxWidth * 0.25 +12,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      WidgetText(
+                        text: stationAllModels[indexDetail!].title,
+                        textStyle: MyConstant().h2Style(),
+                      ),
+                      WidgetText(
+                          text:
+                              'ต.${stationAllModels[indexDetail!].tumbon} อ.${stationAllModels[indexDetail!].amphoe} จ.${stationAllModels[indexDetail!].province} ${stationAllModels[indexDetail!].postcode}'),
+                      WidgetTextButtom(
+                        label: 'รายละเอียด',
+                        pressFunc: () {},
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

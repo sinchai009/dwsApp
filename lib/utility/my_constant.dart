@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class MyConstant {
-  
   static String domain = 'https://iot-isamu.000webhostapp.com';
 
   static double latMap = 13.666808253248941;
@@ -15,6 +14,14 @@ class MyConstant {
   static Color blue = Colors.blue;
   static Color yellow = Colors.yellow;
   static Color green = const Color.fromARGB(255, 6, 149, 10);
+
+  BoxDecoration curveBox() {
+    return BoxDecoration(
+      color: white,
+      borderRadius: BorderRadius.circular(10),
+      border: Border.all(),
+    );
+  }
 
   TextStyle h1Style() {
     return TextStyle(
@@ -61,6 +68,13 @@ class MyConstant {
       fontSize: 14,
       color: dark,
       fontWeight: FontWeight.normal,
+    );
+  }
+   TextStyle h3ActiveStyle() {
+    return TextStyle(
+      fontSize: 16,
+      color: blue,
+      fontWeight: FontWeight.w500,
     );
   }
 }
