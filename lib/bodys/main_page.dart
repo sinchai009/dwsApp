@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+// import 'dart:js_util';
+
 import 'package:chart_sparkline/chart_sparkline.dart';
 import 'package:dio/dio.dart';
 import 'package:dwrapp/models/rain_model.dart';
@@ -29,6 +31,11 @@ class _MainPageState extends State<MainPage> {
   var gridWidgets = <Widget>[];
 
   var pm25s = <double>[];
+  var pm10s = <double>[];
+  var soils = <double>[];
+  var rains = <double>[];
+
+  int lineChartChoose = 0;
 
   @override
   void initState() {
@@ -49,6 +56,10 @@ class _MainPageState extends State<MainPage> {
         rainModels.add(rainModel);
         double pm25 = double.parse(rainModel.pm25.toString());
         pm25s.add(pm25);
+
+        pm10s.add(double.parse(rainModel.pm10.toString()));
+        soils.add(double.parse(rainModel.soil.toString()));
+        rains.add(double.parse(rainModel.r15m.toString()));
       }
 
 //Add DashBoard
@@ -107,19 +118,27 @@ class _MainPageState extends State<MainPage> {
       children: [
         newImage(boxConstraints),
         dashBoard(),
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 8),
-          decoration: MyConstant().curveBox(),
-          width: boxConstraints.maxWidth,
-          height: boxConstraints.maxWidth * 0.8,
-          child: Sparkline(
-            data: pm25s,
-            enableGridLines: true,
-            gridLinelabelPrefix: 'มคก. ',
-            gridLineLabelPrecision: 3,
-          ),
-        )
+        WidgetText(
+          text: 'กราฟแสดงผล',
+          textStyle: MyConstant().h2RedStyle(),
+        ),
+        showGraph(boxConstraints)
       ],
+    );
+  }
+
+  Container showGraph(BoxConstraints boxConstraints) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      decoration: MyConstant().curveBox(),
+      width: boxConstraints.maxWidth,
+      height: boxConstraints.maxWidth * 0.8,
+      child: Sparkline(
+        data: pm10s,
+        enableGridLines: true,
+        //gridLinelabelPrefix: 'มคก. ',
+        gridLineLabelPrecision: 3,
+      ),
     );
   }
 
