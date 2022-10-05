@@ -6,7 +6,7 @@ import 'package:dwrapp/widgets/widget_buttom.dart';
 import 'package:dwrapp/widgets/widget_image_internet.dart';
 import 'package:dwrapp/widgets/widget_text.dart';
 import 'package:dwrapp/widgets/widget_text_buttom.dart';
-import 'package:dwrapp/widgets/wudget_progress.dart';
+import 'package:dwrapp/widgets/widget_progress.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -54,7 +54,7 @@ class _MainHomeState extends State<MainHome> {
           ),
           infoWindow: InfoWindow(
             title: stationAllModel.title,
-            snippet: stationAllModel.station_id,
+            snippet: 'ต.'+stationAllModel.tumbon+' อ.'+stationAllModel.amphoe+' จ.'+stationAllModel.province,
             onTap: () {
               print('## You tap marker index ==>  ${markerId.value}');
               showDetail = true;

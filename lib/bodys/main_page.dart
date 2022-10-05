@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:dwrapp/models/rain_model.dart';
 import 'package:dwrapp/utility/my_constant.dart';
 import 'package:dwrapp/widgets/widget_image_internet.dart';
-import 'package:dwrapp/widgets/wudget_progress.dart';
+import 'package:dwrapp/widgets/widget_progress.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dwrapp/models/station_all_model.dart';
@@ -34,6 +34,8 @@ class _MainPageState extends State<MainPage> {
   var pm10s = <double>[];
   var soils = <double>[];
   var rains = <double>[];
+  var temps = <double>[];
+  var batts = <double>[];
 
   int lineChartChoose = 0;
 
@@ -54,31 +56,34 @@ class _MainPageState extends State<MainPage> {
       for (var element in response) {
         RainModel rainModel = RainModel.fromMap(element);
         rainModels.add(rainModel);
-        double pm25 = double.parse(rainModel.pm25.toString());
-        pm25s.add(pm25);
 
+        pm25s.add(double.parse(rainModel.pm25.toString()));
         pm10s.add(double.parse(rainModel.pm10.toString()));
         soils.add(double.parse(rainModel.soil.toString()));
         rains.add(double.parse(rainModel.r15m.toString()));
+        temps.add(double.parse(rainModel.temp.toString()));
+        batts.add(double.parse(rainModel.v_battery.toString()));
       }
 
 //Add DashBoard
       gridWidgets.add(createWidget(
-          head: 'PM25',
-          value: rainModels[0].pm25.toString(),
-          unit: ' มคก/ตรม'));
-      gridWidgets.add(createWidget(
           head: 'PM10',
           value: rainModels[0].pm10.toString(),
-          unit: ' มคก/ตรม'));
+          unit: 'มคก/ลบ.ม'));
       gridWidgets.add(createWidget(
-          head: 'ฝน', value: rainModels[0].r15m.toString(), unit: ' มม.'));
+          head: 'PM25',
+          value: rainModels[0].pm25.toString(),
+          unit: 'มคก/ลบ.ม'));
+      gridWidgets.add(createWidget(
+          head: 'Rain', value: rainModels[0].r15m.toString(), unit: 'มม.'));
       gridWidgets.add(createWidget(
           head: 'Battary',
           value: rainModels[0].v_battery.toString(),
-          unit: ' Volt'));
+          unit: 'Volt'));
       gridWidgets.add(createWidget(
-          head: 'Soil', value: rainModels[0].soil.toString(), unit: ' Volt'));
+          head: 'Soil', value: rainModels[0].soil.toString(), unit: '%'));
+      gridWidgets.add(createWidget(
+          head: 'Temp', value: rainModels[0].temp.toString(), unit: '°C'));
 
       load = false;
       setState(() {});
@@ -132,12 +137,17 @@ class _MainPageState extends State<MainPage> {
       margin: const EdgeInsets.symmetric(horizontal: 8),
       decoration: MyConstant().curveBox(),
       width: boxConstraints.maxWidth,
-      height: boxConstraints.maxWidth * 0.8,
+      height: boxConstraints.maxWidth * 0.7,
       child: Sparkline(
         data: pm10s,
         enableGridLines: true,
-        //gridLinelabelPrefix: 'มคก. ',
+        lineWidth: 3,
+        pointsMode: PointsMode.all,
+        pointSize: 5,
+        pointColor: Colors.red,
         gridLineLabelPrecision: 3,
+        averageLine: true,
+        averageLabel: true,
       ),
     );
   }
