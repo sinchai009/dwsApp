@@ -1,4 +1,4 @@
-import 'dart:ui';
+
 
 import 'package:flutter/material.dart';
 
@@ -15,9 +15,9 @@ class MyConstant {
   static Color yellow = Colors.yellow;
   static Color green = const Color.fromARGB(255, 6, 149, 10);
 
-  BoxDecoration curveBox() {
+  BoxDecoration curveBox({Color? color}) {
     return BoxDecoration(
-      color: white,
+      color: color ?? white,
       borderRadius: BorderRadius.circular(10),
       border: Border.all(),
     );

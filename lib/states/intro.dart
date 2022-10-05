@@ -33,12 +33,13 @@ class _IntroState extends State<Intro> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: GestureDetector(behavior: HitTestBehavior.opaque,
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
           onTap: () {
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MainHome(),
+                  builder: (context) => const MainHome(),
                 ),
                 (route) => false);
           },
@@ -65,7 +66,8 @@ class _IntroState extends State<Intro> {
             path: 'images/logo.png',
           ),
         ),
-        Row(mainAxisAlignment: MainAxisAlignment.center,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Column(
               children: [

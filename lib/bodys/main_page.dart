@@ -1,5 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-// import 'dart:js_util';
+// ignore_for_file: public_member_api_docs, sort_constructors_first, avoid_print
 
 import 'package:chart_sparkline/chart_sparkline.dart';
 import 'package:dio/dio.dart';
@@ -37,13 +36,47 @@ class _MainPageState extends State<MainPage> {
   var temps = <double>[];
   var batts = <double>[];
 
-  int lineChartChoose = 0;
+  var titles = <String>[
+    'PM10',
+    'PM25',
+    'Rain',
+    'Battary',
+    'Soil',
+    'Temp',
+  ];
+
+  var colorbools = <bool>[];
+
+  var listDatas = <List<double>>[];
+
+  int indexChoose = 0;
 
   @override
   void initState() {
     super.initState();
     stationAllModel = widget.stationAllModel;
+
+    listDatas.add(pm10s);
+    listDatas.add(pm25s);
+    listDatas.add(rains);
+    listDatas.add(batts);
+    listDatas.add(soils);
+    listDatas.add(temps);
+
+    setupColorBools();
+
     readRainData();
+  }
+
+  void setupColorBools() {
+    if (colorbools.isNotEmpty) {
+      colorbools.clear();
+    }
+
+    for (var i = 0; i < 6; i++) {
+      colorbools.add(false);
+    }
+    colorbools[indexChoose] = true;
   }
 
   Future<void> readRainData() async {
@@ -66,47 +99,83 @@ class _MainPageState extends State<MainPage> {
       }
 
 //Add DashBoard
-      gridWidgets.add(createWidget(
-          head: 'PM10',
-          value: rainModels[0].pm10.toString(),
-          unit: 'มคก/ลบ.ม'));
-      gridWidgets.add(createWidget(
-          head: 'PM25',
-          value: rainModels[0].pm25.toString(),
-          unit: 'มคก/ลบ.ม'));
-      gridWidgets.add(createWidget(
-          head: 'Rain', value: rainModels[0].r15m.toString(), unit: 'มม.'));
-      gridWidgets.add(createWidget(
-          head: 'Battary',
-          value: rainModels[0].v_battery.toString(),
-          unit: 'Volt'));
-      gridWidgets.add(createWidget(
-          head: 'Soil', value: rainModels[0].soil.toString(), unit: '%'));
-      gridWidgets.add(createWidget(
-          head: 'Temp', value: rainModels[0].temp.toString(), unit: '°C'));
+      processCreateWidgets();
 
       load = false;
       setState(() {});
     });
   }
 
-  Widget createWidget(
-      {required String head, required String value, required String unit}) {
-    return Container(
-      decoration: MyConstant().curveBox(),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          WidgetText(
-            text: head,
-            textStyle: MyConstant().h2Style(),
-          ),
-          WidgetText(
-            text: value,
-            textStyle: MyConstant().h2BlueStyle(),
-          ),
-          WidgetText(text: unit)
-        ],
+  void processCreateWidgets() {
+    if (gridWidgets.isNotEmpty) {
+      gridWidgets.clear();
+    }
+
+    gridWidgets.add(createWidget(
+        head: 'PM10',
+        value: rainModels[0].pm10.toString(),
+        unit: 'มคก/ลบ.ม.',
+        index: 0));
+    gridWidgets.add(createWidget(
+        head: 'PM25',
+        value: rainModels[0].pm25.toString(),
+        unit: 'มคก/ลบ.ม.',
+        index: 1));
+    gridWidgets.add(createWidget(
+        head: 'Rain',
+        value: rainModels[0].r15m.toString(),
+        unit: 'มม.',
+        index: 2));
+    gridWidgets.add(createWidget(
+        head: 'Battary',
+        value: rainModels[0].v_battery.toString(),
+        unit: 'Volt',
+        index: 3));
+    gridWidgets.add(createWidget(
+        head: 'Soil',
+        value: rainModels[0].soil.toString(),
+        unit: '%',
+        index: 4));
+    gridWidgets.add(createWidget(
+        head: 'Temp',
+        value: rainModels[0].temp.toString(),
+        unit: '°C',
+        index: 5));
+  }
+
+  Widget createWidget({
+    required String head,
+    required String value,
+    required String unit,
+    required int index,
+  }) {
+    return InkWell(
+      onTap: () {
+        print('Your tab index ==> $index');
+        indexChoose = index;
+        setupColorBools();
+        processCreateWidgets();
+        setState(() {});
+      },
+      child: Container(
+        decoration: MyConstant().curveBox(
+            color: colorbools[index]
+                ? Color.fromARGB(255, 148, 222, 152)
+                : Colors.white),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            WidgetText(
+              text: head,
+              textStyle: MyConstant().h2Style(),
+            ),
+            WidgetText(
+              text: value,
+              textStyle: MyConstant().h2BlueStyle(),
+            ),
+            WidgetText(text: unit)
+          ],
+        ),
       ),
     );
   }
@@ -123,12 +192,19 @@ class _MainPageState extends State<MainPage> {
       children: [
         newImage(boxConstraints),
         dashBoard(),
-        WidgetText(
-          text: 'กราฟแสดงผล',
-          textStyle: MyConstant().h2RedStyle(),
-        ),
+        newTitle(),
         showGraph(boxConstraints)
       ],
+    );
+  }
+
+  Container newTitle() {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+      child: WidgetText(
+        text: 'กราฟแสดงผล ${titles[indexChoose]}',
+        textStyle: MyConstant().h2RedStyle(),
+      ),
     );
   }
 
@@ -140,7 +216,7 @@ class _MainPageState extends State<MainPage> {
       height: boxConstraints.maxWidth * 0.7,
       padding: const EdgeInsets.all(20),
       child: Sparkline(
-        data: pm10s,
+        data: listDatas[indexChoose],
         enableGridLines: true,
         lineWidth: 3,
         pointsMode: PointsMode.all,
