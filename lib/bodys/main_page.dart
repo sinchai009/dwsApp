@@ -138,6 +138,7 @@ class _MainPageState extends State<MainPage> {
       decoration: MyConstant().curveBox(),
       width: boxConstraints.maxWidth,
       height: boxConstraints.maxWidth * 0.7,
+      padding: const EdgeInsets.all(20),
       child: Sparkline(
         data: pm10s,
         enableGridLines: true,
@@ -146,8 +147,8 @@ class _MainPageState extends State<MainPage> {
         pointSize: 5,
         pointColor: Colors.red,
         gridLineLabelPrecision: 3,
-        averageLine: true,
-        averageLabel: true,
+        //averageLine: true,
+        //averageLabel: true,
       ),
     );
   }
@@ -170,6 +171,7 @@ class _MainPageState extends State<MainPage> {
     return Container(
       width: boxConstraints.maxWidth,
       height: boxConstraints.maxWidth * 0.8,
+      padding: const EdgeInsets.all(8.0),
       child: WidgetImageInternet(
           url:
               '${MyConstant.domain}/dwr/image/station/${stationAllModel!.image}'),
