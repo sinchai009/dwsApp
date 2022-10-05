@@ -1,8 +1,10 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings
+
 import 'package:dio/dio.dart';
 import 'package:dwrapp/models/station_all_model.dart';
 import 'package:dwrapp/states/detail_station.dart';
 import 'package:dwrapp/utility/my_constant.dart';
-import 'package:dwrapp/widgets/widget_buttom.dart';
+import 'package:dwrapp/utility/my_service.dart';
 import 'package:dwrapp/widgets/widget_image_internet.dart';
 import 'package:dwrapp/widgets/widget_text.dart';
 import 'package:dwrapp/widgets/widget_text_buttom.dart';
@@ -27,6 +29,13 @@ class _MainHomeState extends State<MainHome> {
   void initState() {
     super.initState();
     readAllData();
+
+    Future.delayed(
+      Duration.zero,
+      () {
+        MyService().aboutNotification(context: context);
+      },
+    );
   }
 
   Future<void> readAllData() async {
@@ -53,8 +62,13 @@ class _MainHomeState extends State<MainHome> {
             ),
           ),
           infoWindow: InfoWindow(
-            title: stationAllModel.title,
-            snippet: 'ต.'+stationAllModel.tumbon+' อ.'+stationAllModel.amphoe+' จ.'+stationAllModel.province,
+            title: stationAllModel.title + ' ('+ stationAllModel.station_id +')',
+            snippet: 'ต.' +
+                stationAllModel.tumbon +
+                ' อ.' +
+                stationAllModel.amphoe +
+                ' จ.' +
+                stationAllModel.province,
             onTap: () {
               print('## You tap marker index ==>  ${markerId.value}');
               showDetail = true;
@@ -133,7 +147,7 @@ class _MainHomeState extends State<MainHome> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       WidgetText(
-                        text: stationAllModels[indexDetail!].title,
+                        text: stationAllModels[indexDetail!].title+' ('+stationAllModels[indexDetail!].station_id+')',
                         textStyle: MyConstant().h2Style(),
                       ),
                       WidgetText(

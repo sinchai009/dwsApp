@@ -1,17 +1,22 @@
 import 'dart:io';
 
 import 'package:dwrapp/states/intro.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
 
-void main() {
+Future<void> main() async {
   // Intl.defaultLocale = 'th';
   initializeDateFormatting();
 
   HttpOverrides.global = MyHttpOverride();
 
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp().then((value) {
+    runApp(const MyApp());
+  });
+
+  
 }
 
 class MyApp extends StatelessWidget {

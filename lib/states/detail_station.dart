@@ -1,9 +1,11 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, prefer_interpolation_to_compose_strings
 import 'package:dwrapp/bodys/list_station.dart';
 import 'package:dwrapp/bodys/main_page.dart';
 import 'package:dwrapp/bodys/nitification_page.dart';
 import 'package:dwrapp/bodys/setting_page.dart';
+import 'package:dwrapp/states/main_home.dart';
 import 'package:dwrapp/utility/my_constant.dart';
+import 'package:dwrapp/widgets/widget_icon_buttom.dart';
 import 'package:dwrapp/widgets/widget_text.dart';
 import 'package:flutter/material.dart';
 
@@ -66,16 +68,27 @@ class _DetailStationState extends State<DetailStation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: WidgetIconButtom(
+          iconData: Icons.arrow_back,
+          pressFunc: () {
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MainHome(),), (route) => false);
+          },
+        ),
+        automaticallyImplyLeading: false,
         centerTitle: true,
         backgroundColor: MyConstant.blue,
         title: WidgetText(
-          text: widget.stationAllModel.title,
+          text: indexBody == 0
+              ? widget.stationAllModel.title +
+                  ' (' +
+                  widget.stationAllModel.station_id +
+                  ')'
+              : titles[indexBody],
           textStyle: MyConstant().h2WhiteStyle(),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-       
         items: bottomNavigationBarItems,
         currentIndex: indexBody,
         unselectedIconTheme: IconThemeData(color: MyConstant.blue),
