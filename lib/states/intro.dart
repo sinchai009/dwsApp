@@ -23,7 +23,7 @@ class _IntroState extends State<Intro> {
 
   void findCurrentTime() {
     DateTime dateTime = DateTime.now();
-    print('dateTime ===> $dateTime');
+    print('## dateTime ===> $dateTime');
 
     showDate = MyService().changeDateToDate(dateTime: dateTime);
     showTime = MyService().changeDateToTime(dateTime: dateTime);

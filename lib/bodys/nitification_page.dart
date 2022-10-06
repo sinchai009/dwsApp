@@ -62,9 +62,9 @@ class _NotificationPageState extends State<NotificationPage> {
 
   Color sendColor({required String body}) {
     var colors = <Color>[
-      Colors.red,
-      Colors.yellow,
       Colors.green,
+      Colors.yellow,
+      Colors.red,
     ];
 
     int index = 0;
@@ -73,13 +73,13 @@ class _NotificationPageState extends State<NotificationPage> {
     print('## string[1] ===> ${strings[1]}');
 
     switch (strings[1]) {
-      case 'red':
+      case 'green':
         index = 0;
         break;
       case 'yellow':
         index = 1;
         break;
-      case 'green':
+      case 'red':
         index = 2;
         break;
       default:
