@@ -46,6 +46,7 @@ dependencies:
   sqflite: ^2.1.0
   cloud_firestore: ^3.5.1
   shared_preferences: ^2.0.15
+  badges: ^2.0.3
 
 dev_dependencies:
   flutter_test:

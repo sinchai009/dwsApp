@@ -1,13 +1,26 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/material.dart';
+
 import 'package:dwrapp/models/sqlite_model.dart';
+import 'package:dwrapp/states/detail_station.dart';
 import 'package:dwrapp/utility/my_constant.dart';
 import 'package:dwrapp/utility/sqllite_helper.dart';
 import 'package:dwrapp/widgets/widget_icon_buttom.dart';
 import 'package:dwrapp/widgets/widget_progress.dart';
 import 'package:dwrapp/widgets/widget_text.dart';
-import 'package:flutter/material.dart';
+
+import '../models/station_all_model.dart';
 
 class NotificationPage extends StatefulWidget {
-  const NotificationPage({super.key});
+
+final StationAllModel stationAllModel;
+  final List<StationAllModel> stationAllModels;
+
+  const NotificationPage({
+    Key? key,
+    required this.stationAllModel,
+    required this.stationAllModels,
+  }) : super(key: key);
 
   @override
   State<NotificationPage> createState() => _NotificationPageState();
@@ -97,7 +110,9 @@ class _NotificationPageState extends State<NotificationPage> {
         return ListTile(
           leading: Icon(
             Icons.notifications,
-            color: sqliteModels[index].body.contains('#')  ? sendColor(body: sqliteModels[index].body) : Colors.blue,
+            color: sqliteModels[index].body.contains('#')
+                ? sendColor(body: sqliteModels[index].body)
+                : Colors.blue,
             size: 36,
           ),
           title: WidgetText(
@@ -111,7 +126,15 @@ class _NotificationPageState extends State<NotificationPage> {
               await SQLiteHelper()
                   .deleteValueWhereId(idDelete: sqliteModels[index].id!)
                   .then((value) {
-                readAllNoti();
+                // readAllNoti();
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailStation(
+                          stationAllModel: widget.stationAllModel,
+                          stationAllModels: widget.stationAllModels, indexBody: 2,),
+                    ),
+                    (route) => false);
               });
             },
           ),

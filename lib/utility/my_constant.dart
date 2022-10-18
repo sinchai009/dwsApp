@@ -77,10 +77,10 @@ class MyConstant {
     );
   }
 
-  TextStyle h3Style() {
+  TextStyle h3Style({Color? color}) {
     return TextStyle(
       fontSize: 14,
-      color: dark,
+      color: color ?? dark,
       fontWeight: FontWeight.normal,
     );
   }
