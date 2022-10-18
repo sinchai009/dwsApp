@@ -83,6 +83,8 @@ class _NotificationPageState extends State<NotificationPage> {
         index = 2;
         break;
       default:
+        index = 0;
+        break;
     }
 
     return colors[index];
@@ -95,7 +97,7 @@ class _NotificationPageState extends State<NotificationPage> {
         return ListTile(
           leading: Icon(
             Icons.notifications,
-            color: sendColor(body: sqliteModels[index].body),
+            color: sqliteModels[index].body.contains('#')  ? sendColor(body: sqliteModels[index].body) : Colors.blue,
             size: 36,
           ),
           title: WidgetText(

@@ -1,7 +1,10 @@
-// ignore_for_file: prefer_interpolation_to_compose_strings
+// ignore_for_file: prefer_interpolation_to_compose_strings, avoid_print
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:dwrapp/models/rain_model.dart';
 import 'package:dwrapp/models/station_all_model.dart';
+import 'package:dwrapp/models/token_model.dart';
 import 'package:dwrapp/states/detail_station.dart';
 import 'package:dwrapp/utility/my_constant.dart';
 import 'package:dwrapp/utility/my_service.dart';
@@ -24,6 +27,7 @@ class _MainHomeState extends State<MainHome> {
   var stationAllModels = <StationAllModel>[];
   Map<MarkerId, Marker> markers = {};
   int? indexDetail;
+  int timeCheck = 0;
 
   @override
   void initState() {
@@ -34,6 +38,67 @@ class _MainHomeState extends State<MainHome> {
       Duration.zero,
       () {
         MyService().aboutNotification(context: context);
+      },
+    );
+  }
+
+  Future<void> autoCheck() async {
+    await Future.delayed(
+      const Duration(minutes: 10),
+      () async {
+        if (timeCheck < 3) {
+          print('## auto Check Work');
+
+          for (var element in stationAllModels) {
+            String stationId = element.station_id;
+            String pathRain =
+                'https://iot-isamu.000webhostapp.com/dwr/service/rain/rain.php?stn_id=${element.station_id}';
+            await Dio().get(pathRain).then((value) async {
+              var result = value.data;
+              // print('## value rain ==> $value');
+              var status = result['status'];
+              print('## Status == > $status');
+
+              if (status) {
+                var responses = result['response'];
+                bool first = true;
+                for (var element in responses) {
+                  if (first) {
+                    RainModel rainModel = RainModel.fromMap(element);
+                    first = false;
+
+                    String r15m = rainModel.r15m;
+
+                    if (double.parse(r15m) >= 8) {
+                      print(
+                          '## rain r15m ที่เกิน==> $r15m, from Station id ==> $stationId');
+
+                      await FirebaseFirestore.instance
+                          .collection('user')
+                          .get()
+                          .then((value) async {
+                        for (var element in value.docs) {
+                          TokenModel tokenModel =
+                              TokenModel.fromMap(element.data());
+                          String token = tokenModel.token;
+                          await MyService()
+                              .processSendNiti(
+                                  title: 'Station $stationId',
+                                  body: 'Rain = $r15m %23red',
+                                  token: token)
+                              .then((value) => print('## Send Noti Success'));
+                        }
+                      });
+                    }
+                  }
+                }
+              }
+            });
+          }
+
+          autoCheck();
+          timeCheck++;
+        }
       },
     );
   }
@@ -62,7 +127,8 @@ class _MainHomeState extends State<MainHome> {
             ),
           ),
           infoWindow: InfoWindow(
-            title: stationAllModel.title + ' ('+ stationAllModel.station_id +')',
+            title:
+                stationAllModel.title + ' (' + stationAllModel.station_id + ')',
             snippet: 'ต.' +
                 stationAllModel.tumbon +
                 ' อ.' +
@@ -85,7 +151,7 @@ class _MainHomeState extends State<MainHome> {
         markers[markerId] = marker;
         index++;
       }
-
+      autoCheck();
       load = false;
       setState(() {});
     });
@@ -147,7 +213,10 @@ class _MainHomeState extends State<MainHome> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       WidgetText(
-                        text: stationAllModels[indexDetail!].title+' ('+stationAllModels[indexDetail!].station_id+')',
+                        text: stationAllModels[indexDetail!].title +
+                            ' (' +
+                            stationAllModels[indexDetail!].station_id +
+                            ')',
                         textStyle: MyConstant().h2Style(),
                       ),
                       WidgetText(

@@ -23,10 +23,24 @@ class MyConstant {
     );
   }
 
+  TextStyle h0Style() {
+    return TextStyle(
+      fontSize: 48,
+      color: blue,
+      fontWeight: FontWeight.bold,
+    );
+  }
   TextStyle h1Style() {
     return TextStyle(
       fontSize: 36,
       color: dark,
+      fontWeight: FontWeight.bold,
+    );
+  }
+    TextStyle h1BlueStyle() {
+    return TextStyle(
+      fontSize: 36,
+      color: blue,
       fontWeight: FontWeight.bold,
     );
   }

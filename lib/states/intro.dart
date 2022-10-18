@@ -106,13 +106,14 @@ class _IntroState extends State<Intro> {
           mainAxisSize: MainAxisSize.min,
           children: [
             WidgetText(
+              text: showTime ?? '',
+              textStyle: MyConstant().h0Style(),
+            ),
+            WidgetText(
               text: showDate ?? '',
               textStyle: MyConstant().h2RedStyle(),
             ),
-            WidgetText(
-              text: showTime ?? '',
-              textStyle: MyConstant().h2BlueStyle(),
-            ),
+            
           ],
         ),
       ],
