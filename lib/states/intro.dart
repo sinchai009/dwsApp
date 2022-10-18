@@ -1,3 +1,6 @@
+
+
+import 'package:dwrapp/states/detail_station.dart';
 import 'package:dwrapp/states/main_home.dart';
 import 'package:dwrapp/utility/my_constant.dart';
 import 'package:dwrapp/utility/my_service.dart';
@@ -39,7 +42,7 @@ class _IntroState extends State<Intro> {
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const MainHome(),
+                  builder: (context) => const DetailStation(),
                 ),
                 (route) => false);
           },

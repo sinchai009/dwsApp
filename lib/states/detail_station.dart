@@ -1,9 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, prefer_interpolation_to_compose_strings
 import 'package:badges/badges.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dwrapp/bodys/list_station.dart';
-import 'package:dwrapp/bodys/main_page.dart';
+
 import 'package:dwrapp/bodys/nitification_page.dart';
 import 'package:dwrapp/bodys/setting_page.dart';
 import 'package:dwrapp/models/station_all_model.dart';
@@ -14,13 +15,9 @@ import 'package:dwrapp/widgets/widget_icon_buttom.dart';
 import 'package:dwrapp/widgets/widget_text.dart';
 
 class DetailStation extends StatefulWidget {
-  final StationAllModel stationAllModel;
-  final List<StationAllModel> stationAllModels;
   final int? indexBody;
   const DetailStation({
     Key? key,
-    required this.stationAllModel,
-    required this.stationAllModels,
     this.indexBody,
   }) : super(key: key);
 
@@ -49,6 +46,7 @@ class _DetailStationState extends State<DetailStation> {
   int indexBody = 0;
   int amountNoti = 0;
   bool load = true;
+  var stationAllModels = <StationAllModel>[];
 
   @override
   void initState() {
@@ -56,15 +54,26 @@ class _DetailStationState extends State<DetailStation> {
 
     indexBody = widget.indexBody ?? 0;
 
-    findSqliteData();
+    
+    readAllData();
+  }
 
-    bodys.add(MainPage(stationAllModel: widget.stationAllModel));
-    bodys.add(ListStation(stationAllModels: widget.stationAllModels));
-    bodys.add(NotificationPage(
-      stationAllModel: widget.stationAllModel,
-      stationAllModels: widget.stationAllModels,
-    ));
-    bodys.add(const SettingPage());
+  Future<void> readAllData() async {
+    String path = '${MyConstant.domain}/dwr/service/stations/';
+    await Dio().get(path).then((value) {
+      var result = value.data['response'];
+      for (var element in result) {
+        StationAllModel stationAllModel = StationAllModel.fromMap(element);
+        stationAllModels.add(stationAllModel);
+      }
+
+      bodys.add(MainHome());
+      bodys.add(ListStation(stationAllModels: stationAllModels));
+      bodys.add(const NotificationPage());
+      bodys.add(const SettingPage());
+
+      findSqliteData();
+    });
   }
 
   Future<void> findSqliteData() async {
@@ -100,27 +109,11 @@ class _DetailStationState extends State<DetailStation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: WidgetIconButtom(
-          iconData: Icons.arrow_back,
-          pressFunc: () {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MainHome(),
-                ),
-                (route) => false);
-          },
-        ),
-        automaticallyImplyLeading: false,
+        
         centerTitle: true,
         backgroundColor: MyConstant.blue,
         title: WidgetText(
-          text: indexBody == 0
-              ? widget.stationAllModel.title +
-                  ' (' +
-                  widget.stationAllModel.station_id +
-                  ')'
-              : titles[indexBody],
+          text: titles[indexBody],
           textStyle: MyConstant().h2WhiteStyle(),
         ),
       ),
@@ -137,7 +130,7 @@ class _DetailStationState extends State<DetailStation> {
                 setState(() {});
               },
             ),
-      body: bodys[indexBody],
+      body: load ? const SizedBox() :  bodys[indexBody],
     );
   }
 }

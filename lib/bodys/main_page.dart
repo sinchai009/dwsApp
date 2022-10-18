@@ -182,9 +182,12 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, BoxConstraints boxConstraints) {
+    return Scaffold(
+      appBar: AppBar(title: WidgetText(text: stationAllModel!.title,textStyle: MyConstant().h2WhiteStyle(),),),
+      body: LayoutBuilder(builder: (context, BoxConstraints boxConstraints) {
       return load ? const WidgetProgress() : showContent(boxConstraints);
-    });
+    }),
+    );
   }
 
   ListView showContent(BoxConstraints boxConstraints) {

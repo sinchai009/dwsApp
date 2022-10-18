@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:dwrapp/states/detail_station.dart';
 import 'package:dwrapp/utility/my_constant.dart';
 import 'package:dwrapp/widgets/widget_image.dart';
 import 'package:dwrapp/widgets/widget_text.dart';
@@ -32,6 +33,7 @@ class MyDialog {
             label: 'OK',
             pressFunc: () {
               Navigator.pop(context);
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => DetailStation(indexBody: 2,),), (route) => false);
             },
           )
         ],

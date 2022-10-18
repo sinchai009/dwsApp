@@ -13,13 +13,10 @@ import '../models/station_all_model.dart';
 
 class NotificationPage extends StatefulWidget {
 
-final StationAllModel stationAllModel;
-  final List<StationAllModel> stationAllModels;
 
   const NotificationPage({
     Key? key,
-    required this.stationAllModel,
-    required this.stationAllModels,
+    
   }) : super(key: key);
 
   @override
@@ -130,9 +127,8 @@ class _NotificationPageState extends State<NotificationPage> {
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DetailStation(
-                          stationAllModel: widget.stationAllModel,
-                          stationAllModels: widget.stationAllModels, indexBody: 2,),
+                      builder: (context) => const DetailStation(
+                          indexBody: 2,),
                     ),
                     (route) => false);
               });

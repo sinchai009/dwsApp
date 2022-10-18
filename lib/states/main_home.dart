@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:dwrapp/bodys/main_page.dart';
 import 'package:dwrapp/models/rain_model.dart';
 import 'package:dwrapp/models/station_all_model.dart';
 import 'package:dwrapp/models/token_model.dart';
@@ -44,9 +45,9 @@ class _MainHomeState extends State<MainHome> {
 
   Future<void> autoCheck() async {
     await Future.delayed(
-      const Duration(minutes: 10),
+      const Duration(seconds: 2),
       () async {
-        if (timeCheck < 3) {
+        if (timeCheck < 2) {
           print('## auto Check Work');
 
           for (var element in stationAllModels) {
@@ -69,7 +70,7 @@ class _MainHomeState extends State<MainHome> {
 
                     String r15m = rainModel.r15m;
 
-                    if (double.parse(r15m) >= 8) {
+                    if (double.parse(r15m) >= 7) {
                       print(
                           '## rain r15m ที่เกิน==> $r15m, from Station id ==> $stationId');
 
@@ -160,14 +161,6 @@ class _MainHomeState extends State<MainHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: MyConstant.blue,
-        title: WidgetText(
-          text: 'ต้นแบบสถานีพลังงานต่ำ',
-          textStyle: MyConstant().h2WhiteStyle(),
-        ),
-      ),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints boxConstraints) {
           return SizedBox(
@@ -228,11 +221,7 @@ class _MainHomeState extends State<MainHome> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => DetailStation(
-                                  stationAllModel:
-                                      stationAllModels[indexDetail!],
-                                  stationAllModels: stationAllModels,
-                                ),
+                                builder: (context) => MainPage(stationAllModel: stationAllModels[indexDetail!],),
                               ));
                         },
                       ),

@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, prefer_interpolation_to_compose_strings
+import 'package:dwrapp/bodys/main_page.dart';
 import 'package:dwrapp/states/detail_station.dart';
 import 'package:dwrapp/utility/my_constant.dart';
 import 'package:dwrapp/widgets/widget_image_internet.dart';
@@ -64,14 +65,7 @@ class _ListStationState extends State<ListStation> {
                   WidgetTextButtom(
                     label: 'รายละเอียด ...',
                     pressFunc: () {
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DetailStation(
-                                stationAllModel: stationAllModels[index],
-                                stationAllModels: stationAllModels),
-                          ),
-                          (route) => false);
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(stationAllModel: stationAllModels[index]),));
                     },
                   ),
                 ],
