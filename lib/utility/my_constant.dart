@@ -1,9 +1,8 @@
-
-
 import 'package:flutter/material.dart';
 
 class MyConstant {
-  static String domain = 'https://iot-isamu.000webhostapp.com';
+  //  static String domain = 'https://iot-isamu.000webhostapp.com';
+   static String domain = 'http://203.150.199.205';
 
   static double latMap = 13.666808253248941;
   static double lngMap = 100.55347167093655;
@@ -30,6 +29,7 @@ class MyConstant {
       fontWeight: FontWeight.bold,
     );
   }
+
   TextStyle h1Style() {
     return TextStyle(
       fontSize: 36,
@@ -37,7 +37,8 @@ class MyConstant {
       fontWeight: FontWeight.bold,
     );
   }
-    TextStyle h1BlueStyle() {
+
+  TextStyle h1BlueStyle() {
     return TextStyle(
       fontSize: 36,
       color: blue,
@@ -84,7 +85,8 @@ class MyConstant {
       fontWeight: FontWeight.normal,
     );
   }
-   TextStyle h3ActiveStyle() {
+
+  TextStyle h3ActiveStyle() {
     return TextStyle(
       fontSize: 16,
       color: blue,

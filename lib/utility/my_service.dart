@@ -31,7 +31,7 @@ class MyService {
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var docId = preferences.getString('docId');
-    print('## docId == > ${docId}');
+    print('## ms 34 docId == > ${docId}');
     if (docId == null) {
       docId = 'DWS${Random().nextInt(10000000)}';
       preferences.setString('docId', docId).then((value) async {
@@ -50,7 +50,7 @@ class MyService {
     FirebaseMessaging.onMessage.listen((event) {
       String? title = event.notification!.title;
       String? body = event.notification!.body;
-      print('## OnMassage ===> title= $title, body = $body');
+      print('## 53 ms OnMassage ===> title= $title, body = $body');
 
       MyDialog(context: context).normalDialog(title: title!, body: body!);
       processAddNiti(title: title, body: body);
@@ -67,7 +67,7 @@ class MyService {
 
   Future<void> updateTpken(
       {required String docId, required String token}) async {
-    print('## UpdateToken Work at docId ==> $docId');
+    print('## ms 70 UpdateToken Work at docId ==> $docId');
 
     Map<String, dynamic> map = {};
     map['token'] = token;
@@ -75,7 +75,7 @@ class MyService {
         .collection('user')
         .doc(docId)
         .update(map)
-        .then((value) => print('## Update Token docId ==> $docId Sucess'));
+        .then((value) => print('## ms 78 Update Token docId ==> $docId Sucess'));
   }
 
   Future<void> processAddNiti(

@@ -63,6 +63,7 @@ class _MainPageState extends State<MainPage> {
     listDatas.add(soils);
     listDatas.add(temps);
 
+
     setupColorBools();
 
     readRainData();
@@ -93,10 +94,20 @@ class _MainPageState extends State<MainPage> {
         pm25s.add(double.parse(rainModel.pm25.toString()));
         pm10s.add(double.parse(rainModel.pm10.toString()));
         soils.add(double.parse(rainModel.soil.toString()));
-        rains.add(double.parse(rainModel.r15m.toString()));
+        rains.add(double.parse(rainModel.r12h.toString()));
         temps.add(double.parse(rainModel.temp.toString()));
         batts.add(double.parse(rainModel.v_battery.toString()));
       }
+      print('## 0001 $pm25s');
+
+      pm25s = pm25s.reversed.toList();
+      print('## 0002 $pm25s');   
+
+      pm10s = pm10s.reversed.toList();
+      soils = soils.reversed.toList();
+      rains = rains.reversed.toList();
+      temps = temps.reversed.toList();
+      batts = batts.reversed.toList();
 
 //Add DashBoard
       processCreateWidgets();
@@ -123,7 +134,7 @@ class _MainPageState extends State<MainPage> {
         index: 1));
     gridWidgets.add(createWidget(
         head: 'Rain',
-        value: rainModels[0].r15m.toString(),
+        value: rainModels[0].r12h.toString(),
         unit: 'มม.',
         index: 2));
     gridWidgets.add(createWidget(
@@ -183,10 +194,15 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: WidgetText(text: stationAllModel!.title,textStyle: MyConstant().h2WhiteStyle(),),),
+      appBar: AppBar(
+        title: WidgetText(
+          text: stationAllModel!.title,
+          textStyle: MyConstant().h2WhiteStyle(),
+        ),
+      ),
       body: LayoutBuilder(builder: (context, BoxConstraints boxConstraints) {
-      return load ? const WidgetProgress() : showContent(boxConstraints);
-    }),
+        return load ? const WidgetProgress() : showContent(boxConstraints);
+      }),
     );
   }
 

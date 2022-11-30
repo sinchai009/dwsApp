@@ -45,20 +45,22 @@ class _MainHomeState extends State<MainHome> {
 
   Future<void> autoCheck() async {
     await Future.delayed(
-      const Duration(seconds: 2),
+      const Duration(seconds: 5),
       () async {
-        if (timeCheck < 2) {
-          print('## auto Check Work');
+        if (timeCheck < 5) {
+          print('## 51 auto Check Work');
 
           for (var element in stationAllModels) {
             String stationId = element.station_id;
+            String title = element.title;
             String pathRain =
-                'https://iot-isamu.000webhostapp.com/dwr/service/rain/rain.php?stn_id=${element.station_id}';
+                '${MyConstant.domain}/dwr/service/rain/rain.php?stn_id=${element.station_id}';
             await Dio().get(pathRain).then((value) async {
+              // var result = value.data;
               var result = value.data;
               // print('## value rain ==> $value');
               var status = result['status'];
-              print('## Status == > $status');
+              print('## 63 Status == > $status');
 
               if (status) {
                 var responses = result['response'];
@@ -68,11 +70,12 @@ class _MainHomeState extends State<MainHome> {
                     RainModel rainModel = RainModel.fromMap(element);
                     first = false;
 
-                    String r15m = rainModel.r15m;
+                    String r12h = rainModel.r12h;
+                    // String pm25 = rainModel.pm25;
 
-                    if (double.parse(r15m) >= 7) {
+                    if (double.parse(r12h) >= 50) {
                       print(
-                          '## rain r15m ที่เกิน==> $r15m, from Station id ==> $stationId');
+                          '## 78 rain r12h ที่เกิน==> $r12h, from Station id ==> $stationId');
 
                       await FirebaseFirestore.instance
                           .collection('user')
@@ -84,13 +87,14 @@ class _MainHomeState extends State<MainHome> {
                           String token = tokenModel.token;
                           await MyService()
                               .processSendNiti(
-                                  title: 'Station $stationId',
-                                  body: 'Rain = $r15m %23red',
+                                  title: 'สถานี $title $stationId',
+                                  body: 'Rain = $r12h %23green',
                                   token: token)
-                              .then((value) => print('## Send Noti Success'));
+                              .then((value) => print('## 93 Send Noti Success'));
                         }
                       });
-                    }
+                    } //
+
                   }
                 }
               }
@@ -105,7 +109,7 @@ class _MainHomeState extends State<MainHome> {
   }
 
   Future<void> readAllData() async {
-    String path = '${MyConstant.domain}/dwr/service/stations/';
+    String path = '${MyConstant.domain}/dwr/service/station/';
     await Dio().get(path).then((value) {
       // print('## value ==> $value');
 
@@ -137,7 +141,7 @@ class _MainHomeState extends State<MainHome> {
                 ' จ.' +
                 stationAllModel.province,
             onTap: () {
-              print('## You tap marker index ==>  ${markerId.value}');
+              print('## 144 You tap marker index ==>  ${markerId.value}');
               showDetail = true;
               indexDetail = int.parse(markerId.value.trim());
               setState(() {});
@@ -221,7 +225,10 @@ class _MainHomeState extends State<MainHome> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => MainPage(stationAllModel: stationAllModels[indexDetail!],),
+                                builder: (context) => MainPage(
+                                  stationAllModel:
+                                      stationAllModels[indexDetail!],
+                                ),
                               ));
                         },
                       ),

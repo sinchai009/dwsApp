@@ -80,7 +80,7 @@ class _NotificationPageState extends State<NotificationPage> {
     int index = 0;
 
     var strings = body.split('#');
-    print('## string[1] ===> ${strings[1]}');
+    print('## 83NotiPage string[1] ===> ${strings[1]}');
 
     switch (strings[1]) {
       case 'green':

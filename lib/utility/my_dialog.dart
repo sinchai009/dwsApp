@@ -33,7 +33,7 @@ class MyDialog {
             label: 'OK',
             pressFunc: () {
               Navigator.pop(context);
-              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => DetailStation(indexBody: 2,),), (route) => false);
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const DetailStation(indexBody: 2,),), (route) => false);
             },
           )
         ],
